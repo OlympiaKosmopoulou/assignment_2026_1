@@ -56,4 +56,32 @@ def compute_perplexity(text, stride, n_ctx, begin_context_tokens):
 
     return perplexity
 
+def main():
+    parser = argparse.ArgumentParser()
+
+    parser.add_argument("--stride", type=int, default=512)
+    parser.add_argument("--n-ctx", type=int, default=2048)
+    parser.add_argument("--begin-context-tokens", type=int, default=512)
+
+    parser.add_argument("input_file")
+    parser.add_argument("output_file")
+
+    args = parser.parse_args()
+
+    with open(args.input_file, "r", encoding="utf-8") as f:
+        text = f.read()
+
+    ppl = compute_perplexity(
+        text,
+        args.stride,
+        args.n_ctx,
+        args.begin_context_tokens
+    )
+
+    with open(args.output_file, "w") as f:
+        f.write(f"{ppl}\n")
+
+
+if __name__ == "__main__":
+    main()
 
