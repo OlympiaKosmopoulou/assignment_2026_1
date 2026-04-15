@@ -14,8 +14,8 @@ def compute_perplexity(text, stride, n_ctx, begin_context_tokens):
     tokens = tokenizer(text).input_ids
     bos_token = tokenizer.bos_token_id
 
-    total_nll = 0.0
-    total_predicted = 0
+    total_loss = 0.0
+    token_count = 0
 
     for start in range(0, len(tokens), stride):
         end = min(start + n_ctx, len(tokens))
@@ -48,10 +48,10 @@ def compute_perplexity(text, stride, n_ctx, begin_context_tokens):
             target_token = window[i + 1]
             log_prob = log_probs[target_token]
 
-            total_nll += -log_prob
-            total_predicted += 1
+            total_loss += -log_prob
+            token_count += 1
 
-    avg_nll = total_nll / total_predicted
+    avg_nll = total_loss / token_count
     perplexity = math.exp(avg_nll)
 
     return perplexity
