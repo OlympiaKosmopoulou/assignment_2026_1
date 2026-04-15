@@ -17,11 +17,14 @@ def compute_perplexity(text, stride, n_ctx, begin_context_tokens):
     total_loss = 0.0
     token_count = 0
 
+    // επεξεργασια με sliding window
     for start in range(0, len(tokens), stride):
         end = min(start + n_ctx, len(tokens))
 
+    // παίρνω window
         window = tokens[start:end]
 
+     // Προσθέτω bos
         window = [bos_token] + window
 
         window_tensor = torch.tensor([window])
